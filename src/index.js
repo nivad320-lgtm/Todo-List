@@ -1,31 +1,9 @@
 import "./styles.css";
-import DisplayController from "./homepage.js";
-import AboutPage from "./about.js"
+import CreateTodo from "./createtodo.js";
+import AssembleTodo from "./assembletodo.js";
 
-const indexController = {
-    tabSwitch() {
-        const homeTab = document.querySelector('#home');
-        const aboutTab = document.querySelector('#about');
+const myTodo = new CreateTodo('Workout', 'Arm day', 'Tomorrow', 'Middle')
+const myTodo2 = new CreateTodo('Workout', 'Leg day', 'Next Week', 'High')
 
-        const contentContainer = document.querySelector('#content');
-        DisplayController.loadHome()
-        let currentTab = 'homeTab';
-
-        homeTab.addEventListener('click', (e) => {
-            if (currentTab !== 'home') {
-                contentContainer.replaceChildren();
-                DisplayController.loadHome();
-                currentTab = 'home';
-            }
-        })        
-        aboutTab.addEventListener('click', (e) => {
-            if (currentTab !== 'about') {
-                contentContainer.replaceChildren();
-                AboutPage.loadHome();
-                currentTab = 'about';
-            }
-        })
-    }
-}
-
-indexController.tabSwitch();
+console.log(AssembleTodo.addNewTodoObject(myTodo));
+console.log(AssembleTodo.addNewTodoObject(myTodo2));
