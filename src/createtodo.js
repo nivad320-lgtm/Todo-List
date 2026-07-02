@@ -3,7 +3,7 @@ class CreateTodo {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.priority;
+        this.priority = priority;
     }
 }
 export default CreateTodo;
