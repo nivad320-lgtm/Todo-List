@@ -4,7 +4,7 @@ import AssembleTodo from "./assembletodo.js";
 import CalculateDate from "./calculate-date.js";
 import SetPriority from "./set-priority.js";
 import ChangePriority from "./change-priority.js";
-
+import DisplayController from "./display-controller.js";
 // Thought: Is there a way to skip this part and put in the instance directly into the method?
 const myTodo = new CreateTodo('Workout', 'Arm day', CalculateDate.setDueDate(1), SetPriority.returnPriority(0))
 const myTodo2 = new CreateTodo('Workout', 'Leg day', 'Next Week', 'High')
@@ -23,6 +23,8 @@ project1.removeCompleteTodo(0);
 ChangePriority.newPriority(project1, 0, 1)
 
 console.log(project1);
+
+DisplayController.loadHome('#content')
 
 
 //It console logs the latest version of Project Array.
