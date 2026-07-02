@@ -79,14 +79,16 @@ const DisplayController = {
 
             document.body.appendChild(para)
 
-
-            document.getElementById('name').value = "";
-            document.getElementById('description').value = "";
-            document.getElementById('dueDate').value = "";
-            document.getElementById('priority-select').value = "Low";
+            this.resetForm({ name: '', description: '', dueDate: '', 'priority-select': 'Low' })
         });
 
         return btn
+    },
+
+    resetForm(idObj) {
+        for (const key in idObj) {
+            document.getElementById(key).value = idObj[key];
+        }
     },
 
     loadHome(divID) {
