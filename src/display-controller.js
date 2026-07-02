@@ -1,3 +1,6 @@
+import CreateTodo from "./createtodo.js";
+import AssembleTodo from "./assembletodo.js";
+
 const DisplayController = {
     buildFormRow(type, labelFor, formID, labelName) {
         const formRow = document.createElement('div');
@@ -54,11 +57,33 @@ const DisplayController = {
         btn.setAttribute('value', btnValue)
         btn.textContent = text;
 
+        // Note for future self: Refactor this Later
         btn.addEventListener("click", (event) => {
             event.preventDefault(); // We don't want to submit this fake form
 
-            console.log(document.getElementById('name').value);
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const dueDate = document.getElementById('dueDate').value;
+            const priority = document.getElementById('priority-select').value;
+
+            const project = new AssembleTodo;
+            project.addNewTodoObject(
+                new CreateTodo(name, description, dueDate, priority)
+            );
+
+            const todoObj = Object.values(project)[0];
+            const todoValues = Object.values(Object.values(todoObj)[0]);
+
+            const para = document.createElement('p');
+            para.textContent = todoValues;
+
+            document.body.appendChild(para)
+
+
             document.getElementById('name').value = "";
+            document.getElementById('description').value = "";
+            document.getElementById('dueDate').value = "";
+            document.getElementById('priority-select').value = "Low";
         });
 
         return btn
