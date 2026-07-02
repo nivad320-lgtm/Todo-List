@@ -1,6 +1,6 @@
 class RemoveComplete {
     static removeCompleteTodo(index, array) {
-        array.splice(index, 1);
+        return array.splice(index, 1);
     }
 }
 
