@@ -16,8 +16,8 @@ project1.addNewTodoObject(myTodo);
 project1.addNewTodoObject(myTodo2);
 
 console.log(project1);
-// console.log(typeof(project1));
 ChangePriority.newPriority(project1, 1, 0)
+console.log(project1);
 
 project1.removeCompleteTodo(0);
 ChangePriority.newPriority(project1, 0, 1)

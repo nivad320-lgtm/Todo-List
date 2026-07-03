@@ -1,5 +1,6 @@
 import CreateTodo from "./createtodo.js";
 import AssembleTodo from "./assembletodo.js";
+import RemoveComplete from "./remove-complete.js";
 
 const DisplayController = {
     buildFormRow(type, labelFor, formID, labelName, mandatory) {
@@ -75,20 +76,44 @@ const DisplayController = {
                 new CreateTodo(name, description, dueDate, priority)
             );
 
-            const todoObj = Object.values(project)[0];
-            const todoValues = Object.values(Object.values(todoObj)[0]);
-            // NOTE: Refactor, also there must be better way to join the array together
-            const todoValuesPara = todoValues.filter((value) => value && value !== '-').join(' --- ');
-
-            const para = document.createElement('p');
-            para.textContent = todoValuesPara;
-
-            document.body.appendChild(para)
-
+            this.addTodo(project);
+            
             this.resetForm({ name: '', description: '', dueDate: '', 'priority-select': '-' })
         });
-
+        
         return btn
+    },
+    
+    addTodo(project) {
+        const todoObj = Object.values(project)[0];
+        const todoValues = Object.values(Object.values(todoObj)[0]);
+        // NOTE: Refactor, also there must be better way to join the array together
+        const todoValuesPara = todoValues.filter((value) => value && value !== '-').join(' --- ');
+    
+        const para = document.createElement('p');
+
+        // Set Unique ID for para so it can be specified and deleted later
+        const uniqueID = crypto.randomUUID;
+        para.setAttribute('id', uniqueID);
+        para.textContent = todoValuesPara;
+    
+        document.body.appendChild(para);
+
+        // Delete(Complete) Button
+        const btn = document.createElement('button');
+        btn.textContent = 'Complete'
+        para.appendChild(btn);
+
+        btn.addEventListener("click", (event) => {
+            console.log('Completed. Before...')
+            console.log(project);
+            const child = document.getElementById(uniqueID);
+            document.body.removeChild(child);
+            project.removeCompleteTodo(0);
+            console.log('Completed. After...')
+            console.log(project);
+        })
+        
     },
 
     resetForm(idObj) {
