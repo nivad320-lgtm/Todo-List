@@ -2,7 +2,7 @@ import CreateTodo from "./createtodo.js";
 import AssembleTodo from "./assembletodo.js";
 
 const DisplayController = {
-    buildFormRow(type, labelFor, formID, labelName) {
+    buildFormRow(type, labelFor, formID, labelName, mandatory) {
         const formRow = document.createElement('div');
         formRow.setAttribute('class', 'formRow');
         const label = document.createElement('label');
@@ -12,7 +12,11 @@ const DisplayController = {
         
         input.setAttribute('type', type);
         input.setAttribute('name', formID);
-        input.setAttribute('id', formID)
+        input.setAttribute('id', formID);
+
+        if (mandatory) {
+            input.setAttribute('required', "")
+        }
     
     
         formRow.append(
@@ -49,7 +53,7 @@ const DisplayController = {
         
     },
 
-    buildButton(type, btnClass, btnId, btnValue, text, nameForm) {
+    buildButton(type, btnClass, btnId, btnValue, text, nameForm, parentForm) {
         const btn = document.createElement('input');
         btn.setAttribute('type', type)
         btn.setAttribute('class', btnClass)
@@ -58,7 +62,7 @@ const DisplayController = {
         btn.textContent = text;
 
         // Note for future self: Refactor this Later
-        btn.addEventListener("click", (event) => {
+        parentForm.addEventListener("submit", (event) => {
             event.preventDefault(); // We don't want to submit this fake form
 
             const name = document.getElementById('name').value;
@@ -73,13 +77,15 @@ const DisplayController = {
 
             const todoObj = Object.values(project)[0];
             const todoValues = Object.values(Object.values(todoObj)[0]);
+            // NOTE: Refactor, also there must be better way to join the array together
+            const todoValuesPara = todoValues.filter((value) => value && value !== '-').join(' --- ');
 
             const para = document.createElement('p');
-            para.textContent = todoValues;
+            para.textContent = todoValuesPara;
 
             document.body.appendChild(para)
 
-            this.resetForm({ name: '', description: '', dueDate: '', 'priority-select': 'Low' })
+            this.resetForm({ name: '', description: '', dueDate: '', 'priority-select': '-' })
         });
 
         return btn
@@ -95,17 +101,17 @@ const DisplayController = {
         const containerDiv = document.querySelector(divID)
         const newForm = document.createElement('form');
         
-        const nameForm = this.buildFormRow('text', 'name', 'name', 'Title');
+        const nameForm = this.buildFormRow('text', 'name', 'name', 'Title',true);
 
-        containerDiv.append(
-            newForm,
+        newForm.append(
             nameForm,
             this.buildFormRow('text', 'description', 'description', 'Description'),
             this.buildFormRow('date', 'dueDate', 'dueDate', 'Due Date'),
-            this.buildFormRowSelect('priority', 'priority-select', 'priority-select', ['Low', 'Medium', 'High'], 'Priority'),
-            this.buildButton('submit', 'submitButton', 'submitButton', 'submit', nameForm),
+            this.buildFormRowSelect('priority', 'priority-select', 'priority-select', ['-','Low', 'Medium', 'High'], 'Priority'),
+            this.buildButton('submit', 'submitButton', 'submitButton', 'submit', "", nameForm, newForm),
         )
 
+        containerDiv.appendChild(newForm);
 
     }
 }
