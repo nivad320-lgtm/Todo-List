@@ -108,6 +108,12 @@ const DisplayController = {
         btn.textContent = 'Complete'
         para.appendChild(btn);
 
+        // Give EventListener to Btn
+        this.deleteButtonEventListener(btn, project, uid);
+        
+    },
+    
+    deleteButtonEventListener(btn, project, uid) {
         btn.addEventListener("click", (event) => {
             console.log('Completed. Before...')
             console.table(project);
@@ -116,9 +122,42 @@ const DisplayController = {
             project.removeCompleteTodo(project['todoArray'].map(e => e.uid).indexOf(uid));
             console.log('Completed. After...')
             console.table(project);
+
+            this.showCompleted(project);
         })
         
     },
+
+    showCompleted(project) {
+        // IT IS HARDCODED <--- Not good!
+        const containerDiv = document.querySelector('#content');
+
+        //Update
+        if(document.querySelector('#complete')) {
+            document.querySelector('#complete').remove();
+        }
+
+        const completedContainerDiv = document.createElement('div');
+        completedContainerDiv.setAttribute('id', 'complete')
+
+        const para = document.createElement('p');
+        para.textContent = "Completed Todo"
+        completedContainerDiv.appendChild(para);
+
+        for (const arr of project['completedArray']) {
+            const para = document.createElement('p');
+            para.textContent = Object.values(arr[0]);
+            completedContainerDiv.appendChild(para); 
+        }        
+        
+        // Do I have to do it again? or is there wa way to use other function's variable? 
+
+        containerDiv.appendChild(completedContainerDiv);
+    },
+
+    // updateCompleted(completedContainerDiv) {
+    //     completedContainerDiv.replaceChildren();
+    // },
 
     resetForm(idObj) {
         for (const key in idObj) {
