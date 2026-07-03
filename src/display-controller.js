@@ -3,6 +3,7 @@ import AssembleTodo from "./assembletodo.js";
 import RemoveComplete from "./remove-complete.js";
 
 const DisplayController = {
+    
     buildFormRow(type, labelFor, formID, labelName, mandatory) {
         const formRow = document.createElement('div');
         formRow.setAttribute('class', 'formRow');
@@ -54,7 +55,7 @@ const DisplayController = {
         
     },
 
-    buildButton(type, btnClass, btnId, btnValue, text, nameForm, parentForm) {
+    buildButton(type, btnClass, btnId, btnValue, text, nameForm, parentForm, project) {
         const btn = document.createElement('input');
         btn.setAttribute('type', type)
         btn.setAttribute('class', btnClass)
@@ -71,7 +72,6 @@ const DisplayController = {
             const dueDate = document.getElementById('dueDate').value;
             const priority = document.getElementById('priority-select').value;
 
-            const project = new AssembleTodo;
             project.addNewTodoObject(
                 new CreateTodo(name, description, dueDate, priority)
             );
@@ -86,15 +86,19 @@ const DisplayController = {
     
     addTodo(project) {
         const todoObj = Object.values(project)[0];
-        const todoValues = Object.values(Object.values(todoObj)[0]);
+        const lastTodoObj = project['todoArray'][project['todoArray'].length-1];
+        const { uid, ...todoWithoutUid} = lastTodoObj;
+
+        // last element of array it is an object
+        const todoDescription = Object.values(lastTodoObj);
+
         // NOTE: Refactor, also there must be better way to join the array together
-        const todoValuesPara = todoValues.filter((value) => value && value !== '-').join(' --- ');
+        const todoValuesPara = Object.values(todoWithoutUid).filter((value) => value && value !== '-').join(' --- ');
     
         const para = document.createElement('p');
 
-        // Set Unique ID for para so it can be specified and deleted later
-        const uniqueID = crypto.randomUUID;
-        para.setAttribute('id', uniqueID);
+
+        para.setAttribute('id', uid);
         para.textContent = todoValuesPara;
     
         document.body.appendChild(para);
@@ -106,12 +110,12 @@ const DisplayController = {
 
         btn.addEventListener("click", (event) => {
             console.log('Completed. Before...')
-            console.log(project);
-            const child = document.getElementById(uniqueID);
+            console.table(project);
+            const child = document.getElementById(uid);
             document.body.removeChild(child);
-            project.removeCompleteTodo(0);
+            project.removeCompleteTodo(project['todoArray'].map(e => e.uid).indexOf(uid));
             console.log('Completed. After...')
-            console.log(project);
+            console.table(project);
         })
         
     },
@@ -123,6 +127,9 @@ const DisplayController = {
     },
 
     loadHome(divID) {
+        // New Project
+        const project = new AssembleTodo;
+
         const containerDiv = document.querySelector(divID)
         const newForm = document.createElement('form');
         
@@ -133,7 +140,7 @@ const DisplayController = {
             this.buildFormRow('text', 'description', 'description', 'Description'),
             this.buildFormRow('date', 'dueDate', 'dueDate', 'Due Date'),
             this.buildFormRowSelect('priority', 'priority-select', 'priority-select', ['-','Low', 'Medium', 'High'], 'Priority'),
-            this.buildButton('submit', 'submitButton', 'submitButton', 'submit', "", nameForm, newForm),
+            this.buildButton('submit', 'submitButton', 'submitButton', 'submit', "", nameForm, newForm, project),
         )
 
         containerDiv.appendChild(newForm);
