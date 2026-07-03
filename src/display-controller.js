@@ -84,7 +84,7 @@ const DisplayController = {
         return btn
     },
     
-    addTodo(project) {
+    addTodo(project, divID) {
         const todoObj = Object.values(project)[0];
         const lastTodoObj = project['todoArray'][project['todoArray'].length-1];
         const { uid, ...todoWithoutUid} = lastTodoObj;
@@ -101,7 +101,8 @@ const DisplayController = {
         para.setAttribute('id', uid);
         para.textContent = todoValuesPara;
     
-        document.body.appendChild(para);
+        this.todoDiv.appendChild(para);
+        // document.body.appendChild(para);
 
         // Delete(Complete) Button
         const btn = document.createElement('button');
@@ -118,7 +119,7 @@ const DisplayController = {
             console.log('Completed. Before...')
             console.table(project);
             const child = document.getElementById(uid);
-            document.body.removeChild(child);
+            this.todoDiv.removeChild(child);
             project.removeCompleteTodo(project['todoArray'].map(e => e.uid).indexOf(uid));
             console.log('Completed. After...')
             console.table(project);
@@ -130,7 +131,7 @@ const DisplayController = {
 
     showCompleted(project) {
         // IT IS HARDCODED <--- Not good!
-        const containerDiv = document.querySelector('#content');
+        const containerDiv = this.containerDiv;
 
         //Update
         if(document.querySelector('#complete')) {
@@ -146,7 +147,10 @@ const DisplayController = {
 
         for (const arr of project['completedArray']) {
             const para = document.createElement('p');
-            para.textContent = Object.values(arr[0]);
+            // TODO: I am using this part again. Copied and pasted -- refactor later 
+            const { uid, ...todoWithoutUid} = arr[0];
+            para.textContent = Object.values(todoWithoutUid).filter((value) => value && value !== '-').join(' --- ');
+
             completedContainerDiv.appendChild(para); 
         }        
         
@@ -169,7 +173,8 @@ const DisplayController = {
         // New Project
         const project = new AssembleTodo;
 
-        const containerDiv = document.querySelector(divID)
+        this.containerDiv = document.querySelector(divID)
+        this.todoDiv = document.createElement('div');
         const newForm = document.createElement('form');
         
         const nameForm = this.buildFormRow('text', 'name', 'name', 'Title',true);
@@ -182,7 +187,8 @@ const DisplayController = {
             this.buildButton('submit', 'submitButton', 'submitButton', 'submit', "", nameForm, newForm, project),
         )
 
-        containerDiv.appendChild(newForm);
+        this.containerDiv.appendChild(newForm);
+        this.containerDiv.appendChild(this.todoDiv);
 
     }
 }
