@@ -191,28 +191,29 @@ const DisplayController = {
         this.myProjectArray = new BuildNewProjectArray;
         this.numberOfProjects = 0;
 
-        this.createNewProject();
-        this.createNewProject();
+        // this.createNewProject();
+        // this.createNewProject();
+        this.addButtonProperty();
         
         let project = this.myProjectArray.projectArray[0];
 
-        //Testing switch
-        const switchBtn = document.querySelector('#switch');
-        let current = 0;
-        switchBtn.addEventListener('click', (e) => {
-            if (current === 0) {
-                project = this.myProjectArray.projectArray[1];
-                current++;
-                this.switchHome(project);
+        // //Testing switch
+        // const switchBtn = document.querySelector('#switch');
+        // let current = 0;
+        // switchBtn.addEventListener('click', (e) => {
+        //     if (current === 0) {
+        //         project = this.myProjectArray.projectArray[1];
+        //         current++;
+        //         this.switchHome(project);
                 
-            } else if (current === 1) {
-                project = this.myProjectArray.projectArray[0];
-                current--;
-                this.switchHome(project);
+        //     } else if (current === 1) {
+        //         project = this.myProjectArray.projectArray[0];
+        //         current--;
+        //         this.switchHome(project);
                 
-            }
-            console.table(this.myProjectArray)
-        })
+        //     }
+        //     console.table(this.myProjectArray)
+        // })
 
 
         this.containerDiv = document.querySelector(divID)
@@ -240,6 +241,32 @@ const DisplayController = {
             this.showCompleted(projectIndex);
         }
         
+    },
+
+    addButtonProperty() {
+        const addBtn = document.querySelector('#addBtn');
+        if (!this.numberOfProjects) {
+            this.createNewProject();
+            const projectBtn = document.createElement('button');
+            const currentNumber = this.numberOfProjects;
+            projectBtn.textContent = currentNumber;
+            projectBtn.addEventListener ('click', (e) => {
+                const project = this.myProjectArray.projectArray[currentNumber-1];
+                this.switchHome(project);
+            })
+            document.body.insertBefore(projectBtn, addBtn)
+        }
+        addBtn.addEventListener('click', (e) => {
+            this.createNewProject();
+            const projectBtn = document.createElement('button');
+            const currentNumber = this.numberOfProjects;
+            projectBtn.textContent = currentNumber;
+            projectBtn.addEventListener ('click', (e) => {
+                const project = this.myProjectArray.projectArray[currentNumber-1];
+                this.switchHome(project);
+            })
+            document.body.insertBefore(projectBtn, addBtn)
+        })
     }
 }
 
