@@ -182,25 +182,39 @@ const DisplayController = {
 
     createNewProject(){
         this.myProjectArray.buildNewProject();
-        this.numberOfProjects++;
-        console.log(this.numberOfProjects);
+        this.numberOfProjects = this.myProjectArray.projectArray.length;
+        console.log(`Number of Projects = ${this.numberOfProjects}`);
+    },
+
+    addClearLocalStorageButton(){
+        const btn = document.createElement('button');
+        document.body.appendChild(btn);
+        btn.textContent = 'Clear Local Storage'
+        btn.addEventListener("click", (e) => {
+            localStorage.clear();
+            console.log('Local Storage Cleared');
+        })
     },
 
     loadHome(divID) {
         // New ProjectArray
         this.myProjectArray = new BuildNewProjectArray;
-        this.numberOfProjects = 0;
-
-        // this.createNewProject();
-        // this.createNewProject();
+        this.numberOfProjects = this.myProjectArray.projectArray.length;
         this.addButtonProperty();
-        
         let project = this.myProjectArray.projectArray[0];
-
+        
+        // if(!localStorage.getItem("myProjectArray")) {
+        //     localStorage.setItem("myProjectArray", JSON.stringify(this.myProjectArray));
+        // } else {
+        //     const savedData = JSON.parse(localStorage.getItem("myProjectArray"));
+        //     this.myProjectArray.projectArray = savedData.projectArray || [];
+        // }
+       
         this.containerDiv = document.querySelector(divID)
         this.todoDiv = document.createElement('div');
 
         this.switchHome(project);
+        this.addClearLocalStorageButton();
     },
 
     switchHome(projectIndex){
