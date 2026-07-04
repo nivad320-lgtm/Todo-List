@@ -55,7 +55,7 @@ const DisplayController = {
         
     },
 
-    buildButton(type, btnClass, btnId, btnValue, text, nameForm, parentForm, project) {
+    buildButton(type, btnClass, btnId, btnValue, text, parentForm, project) {
         const btn = document.createElement('input');
         btn.setAttribute('type', type)
         btn.setAttribute('class', btnClass)
@@ -169,23 +169,27 @@ const DisplayController = {
         }
     },
 
+    buildNewForm(newForm, project) {
+        newForm.append(
+            this.buildFormRow('text', 'name', 'name', 'Title', true),
+            this.buildFormRow('text', 'description', 'description', 'Description'),
+            this.buildFormRow('date', 'dueDate', 'dueDate', 'Due Date'),
+            this.buildFormRowSelect('priority', 'priority-select', 'priority-select', ['-','Low', 'Medium', 'High'], 'Priority'),
+            this.buildButton('submit', 'submitButton', 'submitButton', 'submit', "", newForm, project),
+        )
+    },
+
     loadHome(divID) {
         // New Project
         const project = new AssembleTodo;
 
         this.containerDiv = document.querySelector(divID)
         this.todoDiv = document.createElement('div');
-        const newForm = document.createElement('form');
         
-        const nameForm = this.buildFormRow('text', 'name', 'name', 'Title',true);
+        const newForm = document.createElement('form');
+        // this new form is connected to the project
+        this.buildNewForm(newForm, project);
 
-        newForm.append(
-            nameForm,
-            this.buildFormRow('text', 'description', 'description', 'Description'),
-            this.buildFormRow('date', 'dueDate', 'dueDate', 'Due Date'),
-            this.buildFormRowSelect('priority', 'priority-select', 'priority-select', ['-','Low', 'Medium', 'High'], 'Priority'),
-            this.buildButton('submit', 'submitButton', 'submitButton', 'submit', "", nameForm, newForm, project),
-        )
 
         this.containerDiv.appendChild(newForm);
         this.containerDiv.appendChild(this.todoDiv);
