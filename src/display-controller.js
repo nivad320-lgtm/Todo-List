@@ -197,25 +197,6 @@ const DisplayController = {
         
         let project = this.myProjectArray.projectArray[0];
 
-        // //Testing switch
-        // const switchBtn = document.querySelector('#switch');
-        // let current = 0;
-        // switchBtn.addEventListener('click', (e) => {
-        //     if (current === 0) {
-        //         project = this.myProjectArray.projectArray[1];
-        //         current++;
-        //         this.switchHome(project);
-                
-        //     } else if (current === 1) {
-        //         project = this.myProjectArray.projectArray[0];
-        //         current--;
-        //         this.switchHome(project);
-                
-        //     }
-        //     console.table(this.myProjectArray)
-        // })
-
-
         this.containerDiv = document.querySelector(divID)
         this.todoDiv = document.createElement('div');
 
