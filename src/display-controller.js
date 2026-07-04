@@ -1,6 +1,7 @@
 import CreateTodo from "./createtodo.js";
 import AssembleTodo from "./assembletodo.js";
 import RemoveComplete from "./remove-complete.js";
+import BuildNewProjectArray from "./build-new-project.js";
 
 const DisplayController = {
     
@@ -179,21 +180,36 @@ const DisplayController = {
         )
     },
 
+    createNewProject(){
+        this.myProjectArray.buildNewProject();
+        this.numberOfProjects++;
+        console.log(this.numberOfProjects);
+    },
+
     loadHome(divID) {
-        // New Project
-        const project = new AssembleTodo;
+        // New ProjectArray
+        this.myProjectArray = new BuildNewProjectArray;
+        this.numberOfProjects = 0;
+
+        this.createNewProject();
+        this.createNewProject();
+        
+        const project = this.myProjectArray.projectArray[0];
 
         this.containerDiv = document.querySelector(divID)
         this.todoDiv = document.createElement('div');
-        
+
+        this.switchHome(project);
+    },
+
+    switchHome(projectIndex){
+        this.containerDiv.textContent = "";
+        this.todoDiv.textContent = "";
         const newForm = document.createElement('form');
-        // this new form is connected to the project
-        this.buildNewForm(newForm, project);
-
-
+        this.buildNewForm(newForm, projectIndex);
         this.containerDiv.appendChild(newForm);
         this.containerDiv.appendChild(this.todoDiv);
-
+        
     }
 }
 

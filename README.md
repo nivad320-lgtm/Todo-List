@@ -5,6 +5,3 @@
    - [x] Appending issue -- created another div below containerDiv
    - [x] Format so it does not show the uid
 - [] Changing priority of Todo List
-- [] Feature to add new Project
-- [] Tab Switching Between Projects 
-- [] Local Storage

@@ -26,7 +26,6 @@ import DisplayController from "./display-controller.js";
 // console.log(project1);
 
 DisplayController.loadHome('#content')
-DisplayController.loadHome('#content')
 
 
 //It console logs the latest version of Project Array.
