@@ -85,7 +85,7 @@ const DisplayController = {
         return btn
     },
     
-    addTodo(project, divID) {
+    addTodo(project) {
         const todoObj = Object.values(project)[0];
         const lastTodoObj = project['todoArray'][project['todoArray'].length-1];
         const { uid, ...todoWithoutUid} = lastTodoObj;
@@ -194,7 +194,26 @@ const DisplayController = {
         this.createNewProject();
         this.createNewProject();
         
-        const project = this.myProjectArray.projectArray[0];
+        let project = this.myProjectArray.projectArray[0];
+
+        //Testing switch
+        const switchBtn = document.querySelector('#switch');
+        let current = 0;
+        switchBtn.addEventListener('click', (e) => {
+            if (current === 0) {
+                project = this.myProjectArray.projectArray[1];
+                current++;
+                this.switchHome(project);
+                
+            } else if (current === 1) {
+                project = this.myProjectArray.projectArray[0];
+                current--;
+                this.switchHome(project);
+                
+            }
+            console.table(this.myProjectArray)
+        })
+
 
         this.containerDiv = document.querySelector(divID)
         this.todoDiv = document.createElement('div');
@@ -209,6 +228,17 @@ const DisplayController = {
         this.buildNewForm(newForm, projectIndex);
         this.containerDiv.appendChild(newForm);
         this.containerDiv.appendChild(this.todoDiv);
+        
+        // If there is a value in TodoArray
+        if(Object.values(projectIndex)[0][0]) {
+
+            this.addTodo(projectIndex);
+        }
+        // If there is a value in CompletedArray
+        if(Object.values(projectIndex)[1][0]) {
+
+            this.showCompleted(projectIndex);
+        }
         
     }
 }
