@@ -203,12 +203,16 @@ const DisplayController = {
         this.addButtonProperty();
         let project = this.myProjectArray.projectArray[0];
         
-        // if(!localStorage.getItem("myProjectArray")) {
-        //     localStorage.setItem("myProjectArray", JSON.stringify(this.myProjectArray));
-        // } else {
-        //     const savedData = JSON.parse(localStorage.getItem("myProjectArray"));
-        //     this.myProjectArray.projectArray = savedData.projectArray || [];
-        // }
+        if(!localStorage.getItem("myProjectArray")) {
+            this.saveToLocalStorage();
+            // localStorage.setItem("saved", 'yes');
+
+        } else {
+            // console.log(localStorage.getItem('saved'));
+            const savedData = JSON.parse(localStorage.getItem("myProjectArray"));
+            this.myProjectArray.projectArray = savedData.projectArray || [];
+        }
+
        
         this.containerDiv = document.querySelector(divID)
         this.todoDiv = document.createElement('div');
@@ -238,6 +242,12 @@ const DisplayController = {
         
     },
 
+    saveToLocalStorage() {
+        localStorage.setItem("myProjectArray", JSON.stringify(this.myProjectArray));
+        console.log(`Saved to LocalStorage`);
+        console.log(`Current Save: ${localStorage.getItem("myProjectArray")}`)
+    },
+
     addButtonProperty() {
         const addBtn = document.querySelector('#addBtn');
         if (!this.numberOfProjects) {
@@ -250,6 +260,8 @@ const DisplayController = {
                 this.switchHome(project);
             })
             document.body.insertBefore(projectBtn, addBtn)
+            
+            this.saveToLocalStorage();
         }
         addBtn.addEventListener('click', (e) => {
             this.createNewProject();
@@ -261,6 +273,11 @@ const DisplayController = {
                 this.switchHome(project);
             })
             document.body.insertBefore(projectBtn, addBtn)
+
+            this.saveToLocalStorage();
+            // console.log((JSON.stringify(this.myProjectArray)));
+            // console.table(`Parsed = ${JSON.stringify(JSON.parse(JSON.stringify(this.myProjectArray)))}`);
+
         })
     }
 }
