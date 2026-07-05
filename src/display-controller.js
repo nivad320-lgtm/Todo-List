@@ -246,11 +246,20 @@ const DisplayController = {
         this.addClearLocalStorageButton();
     },
 
+    displayProjectNumber(project){
+        const para = document.createElement('p');
+        const currentIndex = this.myProjectArray.projectArray.indexOf(project)+1;
+        para.setAttribute('class', 'projectNumber');       
+        para.textContent = `Project: ${currentIndex}`
+        return para;
+    },
+
     switchHome(projectIndex){
         this.containerDiv.textContent = "";
         this.todoDiv.textContent = "";
         const newForm = document.createElement('form');
         this.buildNewForm(newForm, projectIndex);
+        this.containerDiv.appendChild(this.displayProjectNumber(projectIndex));
         this.containerDiv.appendChild(newForm);
         this.containerDiv.appendChild(this.todoDiv);
         
