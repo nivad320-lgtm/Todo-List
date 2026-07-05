@@ -199,20 +199,46 @@ const DisplayController = {
     loadHome(divID) {
         // New ProjectArray
         this.myProjectArray = new BuildNewProjectArray;
-        this.numberOfProjects = this.myProjectArray.projectArray.length;
-        this.addButtonProperty();
-        let project = this.myProjectArray.projectArray[0];
         
         if(!localStorage.getItem("myProjectArray")) {
+            this.addButtonProperty();
             this.saveToLocalStorage();
             // localStorage.setItem("saved", 'yes');
-
+            
         } else {
             // console.log(localStorage.getItem('saved'));
             const savedData = JSON.parse(localStorage.getItem("myProjectArray"));
-            this.myProjectArray.projectArray = savedData.projectArray || [];
-        }
+            
+            this.numberOfProjects = savedData.projectArray.length;
+            for(let i = 0; i < this.numberOfProjects; i++) {
+                console.log('hi')
+                this.myProjectArray.buildNewProject();
+                this.myProjectArray.projectArray[i].todoArray = savedData.projectArray[i].todoArray || []; 
+                this.myProjectArray.projectArray[i].completedArray = savedData.projectArray[i].completedArray || []; 
 
+            }
+
+            // this.myProjectArray.projectArray = savedData.projectArray || [];
+            
+            this.addButtonProperty();
+            console.log(this.numberOfProjects);
+            for (let i = 0; i < this.numberOfProjects; i++) {
+                const addBtn = document.querySelector('#addBtn');
+                
+                const projectBtn = document.createElement('button');
+                const currentNumber = i+1;
+                projectBtn.textContent = currentNumber;
+                projectBtn.addEventListener ('click', (e) => {
+                    const project = this.myProjectArray.projectArray[currentNumber-1];
+                    this.switchHome(project);
+                })
+                document.body.insertBefore(projectBtn, addBtn)
+                
+            }
+        }
+        this.numberOfProjects = this.myProjectArray.projectArray.length;
+        
+        let project = this.myProjectArray.projectArray[0];
        
         this.containerDiv = document.querySelector(divID)
         this.todoDiv = document.createElement('div');
