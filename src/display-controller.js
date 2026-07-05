@@ -210,12 +210,11 @@ const DisplayController = {
             const savedData = JSON.parse(localStorage.getItem("myProjectArray"));
             
             this.numberOfProjects = savedData.projectArray.length;
+
             for(let i = 0; i < this.numberOfProjects; i++) {
-                console.log('hi')
                 this.myProjectArray.buildNewProject();
                 this.myProjectArray.projectArray[i].todoArray = savedData.projectArray[i].todoArray || []; 
                 this.myProjectArray.projectArray[i].completedArray = savedData.projectArray[i].completedArray || []; 
-
             }
 
             // this.myProjectArray.projectArray = savedData.projectArray || [];
