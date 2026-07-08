@@ -167,9 +167,6 @@ const DisplayController = {
         containerDiv.appendChild(completedContainerDiv);
     },
 
-    // updateCompleted(completedContainerDiv) {
-    //     completedContainerDiv.replaceChildren();
-    // },
 
     resetForm(idObj) {
         for (const key in idObj) {
