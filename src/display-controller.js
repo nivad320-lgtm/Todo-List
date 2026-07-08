@@ -171,10 +171,6 @@ const DisplayController = {
         containerDiv.appendChild(completedContainerDiv);
     },
 
-    // updateCompleted(completedContainerDiv) {
-    //     completedContainerDiv.replaceChildren();
-    // },
-
     resetForm(idObj) {
         for (const key in idObj) {
             document.getElementById(key).value = idObj[key];
@@ -209,11 +205,18 @@ const DisplayController = {
     
     updatePriorityColor(projectArray){
         for (const arr of projectArray) {
+            const uid = arr.uid;
+            const para = document.getElementById(uid)
             if (arr.priority === '-') {
-                console.log(`${arr} no priority!`);
-
-            } else if (arr.priority === 'Low')
-                console.log(`${arr} Low priority!`);
+                para.classList.add('noPriority');
+                
+            } else if (arr.priority === 'Low') {
+                para.classList.add('lowPriority');
+            } else if (arr.priority === 'Medium') {
+                para.classList.add('mediumPriority');
+            } else if (arr.priority === 'High') {
+                para.classList.add('highPriority');
+            }
         }
     },
 

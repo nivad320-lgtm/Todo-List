@@ -1,0 +1,11 @@
+.lowPriority {
+    color: green;
+}
+
+.mediumPriority {
+    color: rgb(255, 183, 0);
+}
+
+.highPriority {
+    color: red;
+}
