@@ -80,38 +80,59 @@ const DisplayController = {
             this.addTodo(project);
             
             this.resetForm({ name: '', description: '', dueDate: '', 'priority-select': '-' })
+            this.saveToLocalStorage();
         });
         
         return btn
     },
     
     addTodo(project) {
-        const todoObj = Object.values(project)[0];
-        const lastTodoObj = project['todoArray'][project['todoArray'].length-1];
-        const { uid, ...todoWithoutUid} = lastTodoObj;
+        // const todoObj = Object.values(project)['todoArray'];
+        // const lastTodoObj = project['todoArray'][project['todoArray'].length-1];
+        // const { uid, ...todoWithoutUid} = lastTodoObj;
 
+        if (document.querySelector('.todoText')) {
+            document.querySelector('.todoText').remove();
+        }
+
+        for (const arr of project['todoArray']) {
+            const para = document.createElement('p');
+            const { uid, ...todoWithoutUid} = arr;
+            para.textContent = Object.values(todoWithoutUid).filter((value) => value && value !== '-').join(' --- ');
+            para.setAttribute('id', uid);
+            para.setAttribute('class', 'todoText')
+            this.todoDiv.appendChild(para);
+// Delete(Complete) Button
+            const btn = document.createElement('button');
+            btn.textContent = 'Complete'
+            para.appendChild(btn);
+
+            // Give EventListener to Btn
+            this.deleteButtonEventListener(btn, project, uid);
+
+        }
         // last element of array it is an object
-        const todoDescription = Object.values(lastTodoObj);
+        // const todoDescription = Object.values(lastTodoObj);
 
         // NOTE: Refactor, also there must be better way to join the array together
-        const todoValuesPara = Object.values(todoWithoutUid).filter((value) => value && value !== '-').join(' --- ');
+        // const todoValuesPara = Object.values(todoWithoutUid).filter((value) => value && value !== '-').join(' --- ');
     
-        const para = document.createElement('p');
+        // const para = document.createElement('p');
 
 
-        para.setAttribute('id', uid);
-        para.textContent = todoValuesPara;
+        // para.setAttribute('id', uid);
+        // para.textContent = todoValuesPara;
     
-        this.todoDiv.appendChild(para);
+        // this.todoDiv.appendChild(para);
         // document.body.appendChild(para);
 
-        // Delete(Complete) Button
-        const btn = document.createElement('button');
-        btn.textContent = 'Complete'
-        para.appendChild(btn);
+        // // Delete(Complete) Button
+        // const btn = document.createElement('button');
+        // btn.textContent = 'Complete'
+        // para.appendChild(btn);
 
-        // Give EventListener to Btn
-        this.deleteButtonEventListener(btn, project, uid);
+        // // Give EventListener to Btn
+        // this.deleteButtonEventListener(btn, project, uid);
         
     },
     
@@ -126,6 +147,7 @@ const DisplayController = {
             console.table(project);
 
             this.showCompleted(project);
+            this.saveToLocalStorage();
         })
         
     },
