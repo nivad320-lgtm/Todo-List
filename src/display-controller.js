@@ -211,6 +211,7 @@ const DisplayController = {
         for (const arr of projectArray) {
             if (arr.priority === '-') {
                 console.log(`${arr} no priority!`);
+
             } else if (arr.priority === 'Low')
                 console.log(`${arr} Low priority!`);
         }
