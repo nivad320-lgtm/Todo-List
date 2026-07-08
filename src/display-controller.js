@@ -87,9 +87,6 @@ const DisplayController = {
     },
     
     addTodo(project) {
-        // const todoObj = Object.values(project)['todoArray'];
-        // const lastTodoObj = project['todoArray'][project['todoArray'].length-1];
-        // const { uid, ...todoWithoutUid} = lastTodoObj;
 
         if (document.querySelector('.todoText')) {
             document.querySelector('.todoText').remove();
@@ -102,51 +99,34 @@ const DisplayController = {
             para.setAttribute('id', uid);
             para.setAttribute('class', 'todoText')
             this.todoDiv.appendChild(para);
-// Delete(Complete) Button
+
+            // Delete(Complete) Button
             const btn = document.createElement('button');
             btn.textContent = 'Complete'
             para.appendChild(btn);
 
             // Give EventListener to Btn
-            this.deleteButtonEventListener(btn, project, uid);
+            this.deleteButtonEventListener(btn, project, 'todoArray', uid, this.todoDiv);
 
         }
-        // last element of array it is an object
-        // const todoDescription = Object.values(lastTodoObj);
-
-        // NOTE: Refactor, also there must be better way to join the array together
-        // const todoValuesPara = Object.values(todoWithoutUid).filter((value) => value && value !== '-').join(' --- ');
-    
-        // const para = document.createElement('p');
-
-
-        // para.setAttribute('id', uid);
-        // para.textContent = todoValuesPara;
-    
-        // this.todoDiv.appendChild(para);
-        // document.body.appendChild(para);
-
-        // // Delete(Complete) Button
-        // const btn = document.createElement('button');
-        // btn.textContent = 'Complete'
-        // para.appendChild(btn);
-
-        // // Give EventListener to Btn
-        // this.deleteButtonEventListener(btn, project, uid);
         
     },
     
-    deleteButtonEventListener(btn, project, uid) {
+    deleteButtonEventListener(btn, project, array, uid, parentDiv) {
         btn.addEventListener("click", (event) => {
-            console.log('Completed. Before...')
-            console.table(project);
             const child = document.getElementById(uid);
-            this.todoDiv.removeChild(child);
-            project.removeCompleteTodo(project['todoArray'].map(e => e.uid).indexOf(uid));
-            console.log('Completed. After...')
-            console.table(project);
+            parentDiv.removeChild(child);
 
-            this.showCompleted(project);
+            
+            if (array === 'todoArray') {
+                
+                project.removeCompleteTodo(project[array].map(e => e.uid).indexOf(uid), project[array]);
+                this.showCompleted(project);
+            }
+
+            if (array === 'completedArray') {
+                project.removeComplete(project[array].map(e => e.uid).indexOf(uid), project[array]);
+            }
             this.saveToLocalStorage();
         })
         
@@ -171,10 +151,15 @@ const DisplayController = {
         for (const arr of project['completedArray']) {
             const para = document.createElement('p');
             // TODO: I am using this part again. Copied and pasted -- refactor later 
-            const { uid, ...todoWithoutUid} = arr[0];
+            const { uid, ...todoWithoutUid} = arr;
             para.textContent = Object.values(todoWithoutUid).filter((value) => value && value !== '-').join(' --- ');
-
+            para.setAttribute('id', uid);
             completedContainerDiv.appendChild(para); 
+
+            const btn = document.createElement('button');
+            btn.textContent = 'Delete'
+            para.appendChild(btn);
+            this.deleteButtonEventListener(btn, project, 'completedArray', uid, completedContainerDiv);
         }        
         
         // Do I have to do it again? or is there wa way to use other function's variable? 
