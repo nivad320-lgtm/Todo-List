@@ -2,6 +2,7 @@ import CreateTodo from "./createtodo.js";
 import AssembleTodo from "./assembletodo.js";
 import RemoveComplete from "./remove-complete.js";
 import BuildNewProjectArray from "./build-new-project.js";
+import SetPriority from "./set-priority.js";
 
 const DisplayController = {
     
@@ -89,7 +90,7 @@ const DisplayController = {
     addTodo(project) {
 
         if (document.querySelector('.todoText')) {
-            document.querySelector('.todoText').remove();
+            this.todoDiv.textContent = '';
         }
 
         for (const arr of project['todoArray']) {
@@ -109,6 +110,7 @@ const DisplayController = {
             this.deleteButtonEventListener(btn, project, 'todoArray', uid, this.todoDiv);
 
         }
+        this.updatePriorityColor(project['todoArray']);
         
     },
     
@@ -126,6 +128,8 @@ const DisplayController = {
 
             if (array === 'completedArray') {
                 project.removeComplete(project[array].map(e => e.uid).indexOf(uid), project[array]);
+                this.showCompleted(project);
+
             }
             this.saveToLocalStorage();
         })
@@ -201,6 +205,15 @@ const DisplayController = {
             localStorage.clear();
             console.log('Local Storage Cleared');
         })
+    },
+    
+    updatePriorityColor(projectArray){
+        for (const arr of projectArray) {
+            if (arr.priority === '-') {
+                console.log(`${arr} no priority!`);
+            } else if (arr.priority === 'Low')
+                console.log(`${arr} Low priority!`);
+        }
     },
 
     loadHome(divID) {
