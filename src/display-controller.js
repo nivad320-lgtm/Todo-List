@@ -30,6 +30,34 @@ const DisplayController = {
         return formRow;
     },
 
+    buildFormRowEdit(type, labelFor, formID, labelName, mandatory, arr) {
+        const formRow = document.createElement('div');
+        formRow.setAttribute('class', 'formRow');
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        label.setAttribute('for', labelFor);
+        label.textContent = `${labelName}: `;
+        
+        input.setAttribute('type', type);
+        input.setAttribute('name', formID);
+        input.setAttribute('id', formID);
+
+        if (mandatory) {
+            input.setAttribute('required', "")
+        }
+
+        if(formID in arr) {
+            input.value = arr[formID];
+        }
+    
+    
+        formRow.append(
+            label,
+            input,
+        )
+        return formRow;
+    },
+
     buildFormRowSelect(selectName, labelFor, formID, values, labelName) {
         const formRow = document.createElement('div');
         formRow.setAttribute('class', 'formRow');
@@ -48,6 +76,38 @@ const DisplayController = {
             option.textContent = value;
             select.appendChild(option);
         }
+
+        formRow.append(
+            label,
+            select,
+        )
+        return formRow
+        
+    },
+
+    buildFormRowSelectEdit(selectName, labelFor, formID, values, labelName, arr) {
+        const formRow = document.createElement('div');
+        formRow.setAttribute('class', 'formRow');
+
+        const label = document.createElement('label');
+        label.setAttribute('for', labelFor);
+        label.textContent = `${labelName}: `;
+
+        const select = document.createElement('select');
+        select.setAttribute('name', selectName);
+        select.setAttribute('id', formID);
+
+        for (let value of values) {
+            const option = document.createElement('option');
+            option.setAttribute('value', value);
+            option.textContent = value;
+            if (selectName in arr && arr[selectName] === value) {
+                console.log(formID)
+                option.selected="selected";
+            }
+            select.appendChild(option);
+        }
+
 
         formRow.append(
             label,
@@ -108,6 +168,17 @@ const DisplayController = {
 
             // Give EventListener to Btn
             this.deleteButtonEventListener(btn, project, 'todoArray', uid, this.todoDiv);
+
+            para.addEventListener('dblclick', (e) => {
+                para.textContent = ""
+                para.append(
+                    this.buildFormRowEdit('text', 'name', 'name', 'Title', true, todoWithoutUid),
+                    this.buildFormRowEdit('text', 'description', 'description', 'Description', true, todoWithoutUid),
+                    this.buildFormRowEdit('date', 'dueDate', 'dueDate', 'Due Date', true, todoWithoutUid),
+                    this.buildFormRowSelectEdit('priority', 'priority-select', 'priority-select', ['-','Low', 'Medium', 'High'], 'Priority', todoWithoutUid),
+                    // this.buildButton('submit', 'submitButton', 'submitButton', 'submit', "", newForm, project),
+                )
+            })
 
             const changeBtn = document.createElement('button');
             changeBtn.textContent = 'Switch';
