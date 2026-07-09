@@ -46,8 +46,8 @@ const DisplayController = {
             input.setAttribute('required', "")
         }
 
-        if(formID in arr) {
-            input.value = arr[formID];
+        if(labelFor in arr) {
+            input.value = arr[labelFor];
         }
     
     
@@ -146,6 +146,39 @@ const DisplayController = {
         
         return btn
     },
+
+    buildButtonEdit(type, btnClass, btnId, btnValue, text, parentForm, arr, project) {
+        const btn = document.createElement('input');
+        btn.setAttribute('type', type)
+        btn.setAttribute('class', btnClass)
+        btn.setAttribute('id', btnId)
+        btn.setAttribute('value', btnValue)
+        btn.textContent = text;
+
+        // Note for future self: Refactor this Later
+        parentForm.addEventListener("submit", (event) => {
+            event.preventDefault(); // We don't want to submit this fake form
+
+            name = document.getElementById('newName').value;
+            console.log(name);
+            // console.log(arr['name']);
+            const description = document.getElementById('newDescription').value;
+            const dueDate = document.getElementById('newDueDate').value;
+            const priority = document.getElementById('newPriority-select').value;
+            arr['name'] = name;
+            arr['description'] = description;
+            arr['dueDate'] = dueDate;
+            arr['priority'] = priority;
+            this.saveToLocalStorage()
+            this.addTodo(project);
+            parentForm.textContent = ''
+            
+            
+
+        });
+        
+        return btn
+    },
     
     addTodo(project) {
 
@@ -170,14 +203,16 @@ const DisplayController = {
             this.deleteButtonEventListener(btn, project, 'todoArray', uid, this.todoDiv);
 
             para.addEventListener('dblclick', (e) => {
-                para.textContent = ""
-                para.append(
-                    this.buildFormRowEdit('text', 'name', 'name', 'Title', true, todoWithoutUid),
-                    this.buildFormRowEdit('text', 'description', 'description', 'Description', true, todoWithoutUid),
-                    this.buildFormRowEdit('date', 'dueDate', 'dueDate', 'Due Date', true, todoWithoutUid),
-                    this.buildFormRowSelectEdit('priority', 'priority-select', 'priority-select', ['-','Low', 'Medium', 'High'], 'Priority', todoWithoutUid),
-                    // this.buildButton('submit', 'submitButton', 'submitButton', 'submit', "", newForm, project),
+                // para.textContent = ""
+                const formDiv = document.createElement('form')
+                formDiv.append(
+                    this.buildFormRowEdit('text', 'name', 'newName', 'Title', true, todoWithoutUid),
+                    this.buildFormRowEdit('text', 'description', 'newDescription', 'Description', false, todoWithoutUid),
+                    this.buildFormRowEdit('date', 'dueDate', 'newDueDate', 'Due Date', false, todoWithoutUid),
+                    this.buildFormRowSelectEdit('priority', 'priority-select', 'newPriority-select', ['-','Low', 'Medium', 'High'], 'Priority', todoWithoutUid),
+                    this.buildButtonEdit('submit', 'submitButton', 'submitButton', 'submit', "", formDiv, arr, project),
                 )
+                para.appendChild(formDiv)
             })
 
             const changeBtn = document.createElement('button');
