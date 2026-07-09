@@ -2,6 +2,7 @@ import CreateTodo from "./createtodo.js";
 import AssembleTodo from "./assembletodo.js";
 import RemoveComplete from "./remove-complete.js";
 import BuildNewProjectArray from "./build-new-project.js";
+import SetPriority from "./set-priority.js";
 
 const DisplayController = {
     
@@ -89,7 +90,7 @@ const DisplayController = {
     addTodo(project) {
 
         if (document.querySelector('.todoText')) {
-            document.querySelector('.todoText').remove();
+            this.todoDiv.textContent = '';
         }
 
         for (const arr of project['todoArray']) {
@@ -108,6 +109,11 @@ const DisplayController = {
             // Give EventListener to Btn
             this.deleteButtonEventListener(btn, project, 'todoArray', uid, this.todoDiv);
 
+            const changeBtn = document.createElement('button');
+            changeBtn.textContent = 'Switch';
+            para.appendChild(changeBtn);
+            this.changePriority(changeBtn, project, uid);
+            this.updatePriorityColor(project);
         }
         
     },
@@ -126,6 +132,8 @@ const DisplayController = {
 
             if (array === 'completedArray') {
                 project.removeComplete(project[array].map(e => e.uid).indexOf(uid), project[array]);
+                this.showCompleted(project);
+
             }
             this.saveToLocalStorage();
         })
@@ -167,7 +175,6 @@ const DisplayController = {
         containerDiv.appendChild(completedContainerDiv);
     },
 
-
     resetForm(idObj) {
         for (const key in idObj) {
             document.getElementById(key).value = idObj[key];
@@ -197,6 +204,54 @@ const DisplayController = {
         btn.addEventListener("click", (e) => {
             localStorage.clear();
             console.log('Local Storage Cleared');
+        })
+    },
+    
+    updatePriorityColor(projectArray){
+        for (const arr of projectArray['todoArray']) {
+            const uid = arr.uid;
+            const para = document.getElementById(uid)
+            if (arr.priority === '-') {
+                para.classList.add('noPriority');
+                
+            } else if (arr.priority === 'Low') {
+                para.classList.add('lowPriority');
+            } else if (arr.priority === 'Medium') {
+                para.classList.add('mediumPriority');
+            } else if (arr.priority === 'High') {
+                para.classList.add('highPriority');
+            }
+        }
+    },
+
+    changePriority(btn, project, thisUid) {
+        btn.addEventListener("click", (e) => {
+            const result = project['todoArray'].find(({ uid }) => uid === thisUid);
+            const para = document.getElementById(thisUid);
+
+            if (para.classList.contains('noPriority')) {
+                para.classList.remove('noPriority')
+            } else if (para.classList.contains('lowPriority')) {
+                para.classList.remove('lowPriority')
+            } else if (para.classList.contains('mediumPriority')) {
+                para.classList.remove('mediumPriority')
+            } else if (para.classList.contains('highPriority')) {
+                para.classList.remove('highPriority')
+            }
+
+            if (result.priority === '-') {
+                result.priority = 'Low';
+            } else if(result.priority === 'Low') {
+                result.priority = 'Medium';
+            }else if(result.priority === 'Medium') {
+                result.priority = 'High';
+            }else if(result.priority === 'High') {
+                result.priority = '-'; 
+            }
+
+            this.addTodo(project);
+            
+            this.saveToLocalStorage();    
         })
     },
 
