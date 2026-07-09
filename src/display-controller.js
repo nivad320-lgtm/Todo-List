@@ -3,6 +3,7 @@ import AssembleTodo from "./assembletodo.js";
 import RemoveComplete from "./remove-complete.js";
 import BuildNewProjectArray from "./build-new-project.js";
 import SetPriority from "./set-priority.js";
+import { de } from "date-fns/locale";
 
 const DisplayController = {
     
@@ -196,6 +197,7 @@ const DisplayController = {
 
             // Delete(Complete) Button
             const btn = document.createElement('button');
+            btn.setAttribute('class', 'completeButton')
             btn.textContent = 'Complete'
             para.appendChild(btn);
 
@@ -220,6 +222,7 @@ const DisplayController = {
                 }
             })
             const changeBtn = document.createElement('button');
+            changeBtn.setAttribute('class', 'switchButton')
             changeBtn.textContent = 'Switch';
             para.appendChild(changeBtn);
             this.changePriority(changeBtn, project, uid);
@@ -275,6 +278,7 @@ const DisplayController = {
             completedContainerDiv.appendChild(para); 
 
             const btn = document.createElement('button');
+            btn.setAttribute('class', 'deleteButton')
             btn.textContent = 'Delete'
             para.appendChild(btn);
             this.deleteButtonEventListener(btn, project, 'completedArray', uid, completedContainerDiv);
@@ -311,6 +315,7 @@ const DisplayController = {
         const btn = document.createElement('button');
         document.body.appendChild(btn);
         btn.textContent = 'Clear Local Storage'
+        btn.setAttribute('class', 'clearButton')
         btn.addEventListener("click", (e) => {
             localStorage.clear();
             console.log('Local Storage Cleared');
@@ -425,6 +430,11 @@ const DisplayController = {
 
         this.switchHome(project);
         this.addClearLocalStorageButton();
+
+        const para = document.createElement('footer');
+        para.textContent = '박다빈.'
+        para.setAttribute('id', 'signature');
+        document.body.appendChild(para);
     },
 
     displayProjectNumber(project){

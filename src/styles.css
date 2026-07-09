@@ -10,17 +10,80 @@
     color: red;
 }
 
+body {
+    background-color: whitesmoke;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeSpeed;
+    text-shadow: .3px .5px 0px #000000;
+    background-image: url(./bg.png);
+    min-height: 100vh;
+
+}
+
 #content {
     border: .5px solid black;
     padding: 16px;
+    background-color: white;
+    position: relative;
+    margin: -.7px 0 0 0em;
+    z-index: 1;
+    box-shadow: 4px 4px 0px #000000;
 }
 
 button {
-    background-color: white;
+    background-color: rgb(227, 227, 227);
     border: .5px solid black;
+    padding: 8px;
+    /* margin-bottom: 10px; */
     border-bottom: none;
 }
 
 .selected {
-    background-color: blue;
+    /* background-color: blue; */
+    border-bottom: 0px solid white;
+    background-color: white;
+    padding: 8px 12px;
+    position: relative;
+    z-index: 2;
+}
+
+.clearButton {
+    background-color: white;
+    border: 0.5px black solid;
+    margin-top: 8px;
+    color: red;
+    text-shadow: .3px .5px 0px #000000;
+    box-shadow: 3px 3px 0px #000000;
+    font-family: inherit;
+    font-weight: bold;
+}
+
+h1 {
+    color: blue;
+    text-shadow: 1px .5px 0px #000000;
+    background-color: white;
+    box-shadow: 4px 4px 0px #000000;
+    border: 0.5px black solid;
+    padding: 8px;
+}
+
+.completeButton,
+.switchButton,
+.deleteButton {
+    border: 0.5px black solid;
+    margin-left: 8px;
+}
+.projectNumber {
+    margin: 0;
+    margin-bottom: 12px;
+}
+
+#signature {
+    background-color: white;
+    width: fit-content;
+    padding: 4px 50px 4px 50px;
+    box-shadow: 4px 4px 0px #000000;
+    margin-top: 12px;
+    font-size: 13px;
 }
