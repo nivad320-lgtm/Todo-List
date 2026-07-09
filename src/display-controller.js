@@ -112,9 +112,9 @@ const DisplayController = {
             const changeBtn = document.createElement('button');
             changeBtn.textContent = 'Switch';
             para.appendChild(changeBtn);
-            this.changePriority(changeBtn, project['todoArray'], uid);
+            this.changePriority(changeBtn, project, uid);
+            this.updatePriorityColor(project);
         }
-        this.updatePriorityColor(project['todoArray']);
         
     },
     
@@ -208,7 +208,7 @@ const DisplayController = {
     },
     
     updatePriorityColor(projectArray){
-        for (const arr of projectArray) {
+        for (const arr of projectArray['todoArray']) {
             const uid = arr.uid;
             const para = document.getElementById(uid)
             if (arr.priority === '-') {
@@ -226,7 +226,7 @@ const DisplayController = {
 
     changePriority(btn, project, thisUid) {
         btn.addEventListener("click", (e) => {
-            const result = project.find(({ uid }) => uid === thisUid);
+            const result = project['todoArray'].find(({ uid }) => uid === thisUid);
             const para = document.getElementById(thisUid);
 
             if (para.classList.contains('noPriority')) {
@@ -249,7 +249,9 @@ const DisplayController = {
                 result.priority = '-'; 
             }
 
-            this.updatePriorityColor(project);            
+            this.addTodo(project);
+            
+            this.saveToLocalStorage();    
         })
     },
 
