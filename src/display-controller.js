@@ -201,20 +201,24 @@ const DisplayController = {
 
             // Give EventListener to Btn
             this.deleteButtonEventListener(btn, project, 'todoArray', uid, this.todoDiv);
-
+            let clickCounter = 0;
+            
             para.addEventListener('dblclick', (e) => {
-                // para.textContent = ""
-                const formDiv = document.createElement('form')
-                formDiv.append(
-                    this.buildFormRowEdit('text', 'name', 'newName', 'Title', true, todoWithoutUid),
-                    this.buildFormRowEdit('text', 'description', 'newDescription', 'Description', false, todoWithoutUid),
-                    this.buildFormRowEdit('date', 'dueDate', 'newDueDate', 'Due Date', false, todoWithoutUid),
-                    this.buildFormRowSelectEdit('priority', 'priority-select', 'newPriority-select', ['-','Low', 'Medium', 'High'], 'Priority', todoWithoutUid),
-                    this.buildButtonEdit('submit', 'submitButton', 'submitButton', 'submit', "", formDiv, arr, project),
-                )
-                para.appendChild(formDiv)
+                if (clickCounter === 0) {
+                    const formDiv = document.createElement('form')
+                    formDiv.append(
+                        this.buildFormRowEdit('text', 'name', 'newName', 'Title', true, todoWithoutUid),
+                        this.buildFormRowEdit('text', 'description', 'newDescription', 'Description', false, todoWithoutUid),
+                        this.buildFormRowEdit('date', 'dueDate', 'newDueDate', 'Due Date', false, todoWithoutUid),
+                        this.buildFormRowSelectEdit('priority', 'priority-select', 'newPriority-select', ['-','Low', 'Medium', 'High'], 'Priority', todoWithoutUid),
+                        this.buildButtonEdit('submit', 'submitButton', 'submitButton', 'Edit', "", formDiv, arr, project),
+                    )
+                    para.appendChild(formDiv)
+                    clickCounter++;
+                    console.log(clickCounter);
+                    
+                }
             })
-
             const changeBtn = document.createElement('button');
             changeBtn.textContent = 'Switch';
             para.appendChild(changeBtn);
