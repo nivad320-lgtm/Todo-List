@@ -113,8 +113,8 @@ const DisplayController = {
             changeBtn.textContent = 'Switch';
             para.appendChild(changeBtn);
             this.changePriority(changeBtn, project, uid);
-            this.updatePriorityColor(project);
         }
+        this.updatePriorityColor(project);
         
     },
     
