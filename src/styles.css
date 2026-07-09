@@ -9,3 +9,18 @@
 .highPriority {
     color: red;
 }
+
+#content {
+    border: .5px solid black;
+    padding: 16px;
+}
+
+button {
+    background-color: white;
+    border: .5px solid black;
+    border-bottom: none;
+}
+
+.selected {
+    background-color: blue;
+}

@@ -379,6 +379,7 @@ const DisplayController = {
             const savedData = JSON.parse(localStorage.getItem("myProjectArray"));
             
             this.numberOfProjects = savedData.projectArray.length;
+            this.addButtonProperty();
 
             for(let i = 0; i < this.numberOfProjects; i++) {
                 this.myProjectArray.buildNewProject();
@@ -388,7 +389,6 @@ const DisplayController = {
 
             // this.myProjectArray.projectArray = savedData.projectArray || [];
             
-            this.addButtonProperty();
             console.log(this.numberOfProjects);
             for (let i = 0; i < this.numberOfProjects; i++) {
                 const addBtn = document.querySelector('#addBtn');
@@ -396,9 +396,21 @@ const DisplayController = {
                 const projectBtn = document.createElement('button');
                 const currentNumber = i+1;
                 projectBtn.textContent = currentNumber;
+                projectBtn.setAttribute('id', currentNumber);
+                projectBtn.setAttribute('class', 'projectButton')
+                if (i === 0) {
+                    projectBtn.classList.toggle('selected');
+                }
+                
+
                 projectBtn.addEventListener ('click', (e) => {
                     const project = this.myProjectArray.projectArray[currentNumber-1];
                     this.switchHome(project);
+                    const projectButtons = document.querySelectorAll('.projectButton');
+                    projectButtons.forEach((projectButton) => {
+                        projectButton.classList.remove("selected")
+                    })
+                    projectBtn.classList.toggle("selected")
                 })
                 document.body.insertBefore(projectBtn, addBtn)
                 
@@ -432,6 +444,7 @@ const DisplayController = {
         this.containerDiv.appendChild(newForm);
         this.containerDiv.appendChild(this.todoDiv);
         
+
         // If there is a value in TodoArray
         if(Object.values(projectIndex)[0][0]) {
 
@@ -458,9 +471,17 @@ const DisplayController = {
             const projectBtn = document.createElement('button');
             const currentNumber = this.numberOfProjects;
             projectBtn.textContent = currentNumber;
+            projectBtn.setAttribute('id', currentNumber)
+            projectBtn.setAttribute('class', 'projectButton')
+            projectBtn.classList.toggle('selected')
             projectBtn.addEventListener ('click', (e) => {
                 const project = this.myProjectArray.projectArray[currentNumber-1];
                 this.switchHome(project);
+                const projectButtons = document.querySelectorAll('.projectButton');
+                    projectButtons.forEach((projectButton) => {
+                        projectButton.classList.remove("selected")
+                    })
+                    projectBtn.classList.toggle("selected")
             })
             document.body.insertBefore(projectBtn, addBtn)
             
@@ -470,10 +491,22 @@ const DisplayController = {
             this.createNewProject();
             const projectBtn = document.createElement('button');
             const currentNumber = this.numberOfProjects;
+            const projectButtons = document.querySelectorAll('.projectButton');
+                    projectButtons.forEach((projectButton) => {
+                        projectButton.classList.remove("selected")
+                    })
+            projectBtn.setAttribute('id', currentNumber)
+            projectBtn.setAttribute('class', 'projectButton')
+            projectBtn.classList.toggle('selected')
             projectBtn.textContent = currentNumber;
             projectBtn.addEventListener ('click', (e) => {
                 const project = this.myProjectArray.projectArray[currentNumber-1];
                 this.switchHome(project);
+                const projectButtons = document.querySelectorAll('.projectButton');
+                    projectButtons.forEach((projectButton) => {
+                        projectButton.classList.remove("selected")
+                    })
+                    projectBtn.classList.toggle("selected")
             })
             
             const newPage = this.myProjectArray.projectArray[currentNumber-1];
