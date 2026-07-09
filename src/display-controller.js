@@ -109,6 +109,10 @@ const DisplayController = {
             // Give EventListener to Btn
             this.deleteButtonEventListener(btn, project, 'todoArray', uid, this.todoDiv);
 
+            const changeBtn = document.createElement('button');
+            changeBtn.textContent = 'Switch';
+            para.appendChild(changeBtn);
+            this.changePriority(changeBtn, project['todoArray'], uid);
         }
         this.updatePriorityColor(project['todoArray']);
         
@@ -218,6 +222,35 @@ const DisplayController = {
                 para.classList.add('highPriority');
             }
         }
+    },
+
+    changePriority(btn, project, thisUid) {
+        btn.addEventListener("click", (e) => {
+            const result = project.find(({ uid }) => uid === thisUid);
+            const para = document.getElementById(thisUid);
+
+            if (para.classList.contains('noPriority')) {
+                para.classList.remove('noPriority')
+            } else if (para.classList.contains('lowPriority')) {
+                para.classList.remove('lowPriority')
+            } else if (para.classList.contains('mediumPriority')) {
+                para.classList.remove('mediumPriority')
+            } else if (para.classList.contains('highPriority')) {
+                para.classList.remove('highPriority')
+            }
+
+            if (result.priority === '-') {
+                result.priority = 'Low';
+            } else if(result.priority === 'Low') {
+                result.priority = 'Medium';
+            }else if(result.priority === 'Medium') {
+                result.priority = 'High';
+            }else if(result.priority === 'High') {
+                result.priority = '-'; 
+            }
+
+            this.updatePriorityColor(project);            
+        })
     },
 
     loadHome(divID) {
