@@ -365,6 +365,10 @@ const DisplayController = {
                 const project = this.myProjectArray.projectArray[currentNumber-1];
                 this.switchHome(project);
             })
+            
+            const newPage = this.myProjectArray.projectArray[currentNumber-1];
+            this.switchHome(newPage);
+
             document.body.insertBefore(projectBtn, addBtn)
 
             this.saveToLocalStorage();
